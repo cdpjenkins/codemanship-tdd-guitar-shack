@@ -39,6 +39,16 @@ public class AddItemTest {
                 .isInstanceOf(IllegalStateException.class)
             .hasMessage("Insufficient stock of Ibanez Tube Screamer. Only 1 currently available.");
     }
+
+    @Test
+    void raises_error_when_insufficient_product_stock_available_due_to_a_hold() {
+        Product product = new Product(327, "Ibanez Tube Screamer", 2, 1);
+        Order order = new Order();
+
+        assertThatThrownBy(() -> order.addItem(product, 2))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("Insufficient stock of Ibanez Tube Screamer. Only 1 currently available.");
+    }
 }
 
 class Product {
@@ -79,8 +89,9 @@ class Order {
     List<OrderItem> orderItems = new ArrayList<>();
 
     public void addItem(Product product, int quantity) {
-        if (product.getStock() < quantity) {
-            throw new IllegalStateException("Insufficient stock of " + product.getDescription() + ". Only " + product.getStock() + " currently available.");
+        int available = product.getStock() - product.getHold();
+        if (quantity > available) {
+            throw new IllegalStateException("Insufficient stock of " + product.getDescription() + ". Only " + available + " currently available.");
         }
 
         orderItems.add(new OrderItem(product.getId(), quantity));
