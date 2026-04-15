@@ -64,6 +64,10 @@ class Product {
         this.hold = hold;
     }
 
+    public int getAvailable() {
+        return getStock() - getHold();
+    }
+
     public int getHold() {
         return hold;
     }
@@ -89,7 +93,7 @@ class Order {
     List<OrderItem> orderItems = new ArrayList<>();
 
     public void addItem(Product product, int quantity) {
-        int available = product.getStock() - product.getHold();
+        int available = product.getAvailable();
         if (quantity > available) {
             throw new IllegalStateException("Insufficient stock of " + product.getDescription() + ". Only " + available + " currently available.");
         }
