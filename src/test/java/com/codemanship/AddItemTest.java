@@ -37,7 +37,7 @@ public class AddItemTest {
 
         assertThatThrownBy(() -> order.addItem(product, 2))
                 .isInstanceOf(IllegalStateException.class)
-            .hasMessage("Insufficient stock of Ibanez Tube Screamer. Only 1 currently available.");
+                .hasMessage("Insufficient stock of Ibanez Tube Screamer. Only 1 currently available.");
     }
 
     @Test
