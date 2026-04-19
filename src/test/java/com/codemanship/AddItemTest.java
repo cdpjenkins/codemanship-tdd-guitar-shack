@@ -2,9 +2,6 @@ package com.codemanship;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -49,65 +46,6 @@ public class AddItemTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessage("Insufficient stock of Ibanez Tube Screamer. Only 1 currently available.");
     }
-}
-
-class Product {
-    private final int id;
-    private final String description;
-    private final int stock;
-    private int hold;
-
-    public Product(int id, String description, int stock, int hold) {
-        this.id = id;
-        this.description = description;
-        this.stock = stock;
-        this.hold = hold;
-    }
-
-    public int getAvailable() {
-        return getStock() - getHold();
-    }
-
-    public int getHold() {
-        return hold;
-    }
-
-    public void addHold(int quantity) {
-        hold += quantity;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-}
-
-class Order {
-    List<OrderItem> orderItems = new ArrayList<>();
-
-    public void addItem(Product product, int quantity) {
-        int available = product.getAvailable();
-        if (quantity > available) {
-            throw new IllegalStateException("Insufficient stock of " + product.getDescription() + ". Only " + available + " currently available.");
-        }
-
-        orderItems.add(new OrderItem(product.getId(), quantity));
-        product.addHold(quantity);
-    }
-
-    public List<OrderItem> getItems() {
-        return orderItems;
-    }
-}
-
-record OrderItem(int productId, int quantity) {
 }
 
 
