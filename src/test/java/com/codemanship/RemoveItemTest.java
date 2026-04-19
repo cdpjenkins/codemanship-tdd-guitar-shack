@@ -10,7 +10,7 @@ public class RemoveItemTest {
     @Test
     void temporary_hold_is_released_when_item_is_removed() {
         Product product = new Product(327, "A nice guitar", 1, 1);
-        Order order = new Order();
+        Order order = new Order(new OrderItem(327, 1));
 
         order.removeItem(product, 1);
 
@@ -20,7 +20,7 @@ public class RemoveItemTest {
     @Test
     void item_is_removed_from_order_item_list() {
         Product product = new Product(327, "A nice guitar", 1, 1);
-        Order order = new Order();
+        Order order = new Order(new OrderItem(327, 1));
 
         order.removeItem(product, 1);
 
