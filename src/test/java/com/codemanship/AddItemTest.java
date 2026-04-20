@@ -7,10 +7,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class AddItemTest {
 
+    private GuitarShack guitarShack = new GuitarShack();
+
     @Test
     void temporary_hold_is_placed_when_sufficient_stock() {
         Product product = new Product(327, "Ibanez Tube Screamer", 7, 0);
-        Order order = new Order();
+        Order order = new Order(guitarShack);
 
         order.addItem(product, 1);
 
@@ -20,7 +22,7 @@ public class AddItemTest {
     @Test
     void item_is_added_to_order_list_when_sufficient_stock() {
         Product product = new Product(327, "Ibanez Tube Screamer", 7, 0);
-        Order order = new Order();
+        Order order = new Order(guitarShack);
 
         order.addItem(product, 1);
 
@@ -30,7 +32,7 @@ public class AddItemTest {
     @Test
     void raises_error_when_insufficient_product_stock() {
         Product product = new Product(327, "Ibanez Tube Screamer", 1, 0);
-        Order order = new Order();
+        Order order = new Order(guitarShack);
 
         assertThatThrownBy(() -> order.addItem(product, 2))
                 .isInstanceOf(IllegalStateException.class)
@@ -40,7 +42,7 @@ public class AddItemTest {
     @Test
     void raises_error_when_insufficient_product_stock_available_due_to_a_hold() {
         Product product = new Product(327, "Ibanez Tube Screamer", 2, 1);
-        Order order = new Order();
+        Order order = new Order(guitarShack);
 
         assertThatThrownBy(() -> order.addItem(product, 2))
                 .isInstanceOf(IllegalStateException.class)

@@ -6,7 +6,7 @@ import java.util.List;
 public class Order {
     List<OrderItem> orderItems = new ArrayList<>();
 
-    public Order() {}
+    public Order(GuitarShack guitarShack) {}
 
     public Order(OrderItem orderItem) {
         this.orderItems.add(orderItem);
