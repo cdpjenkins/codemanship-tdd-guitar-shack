@@ -4,22 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
+    private final GuitarShack guitarShack;
     List<OrderItem> orderItems = new ArrayList<>();
 
-    public Order(GuitarShack guitarShack) {}
-
-    public Order(OrderItem orderItem) {
-        this.orderItems.add(orderItem);
+    public Order(GuitarShack guitarShack) {
+        this.guitarShack = guitarShack;
     }
 
     public void addItem(Product product, int quantity) {
-        int available = product.getAvailable();
+
+        int productId = product.getId();
+        StockItem stockItem = guitarShack.getStockItem(productId);
+
+        int available = stockItem.getQuantityInStock();
         if (quantity > available) {
             throw new IllegalStateException("Insufficient stock of " + product.getDescription() + ". Only " + available + " currently available.");
         }
 
-        orderItems.add(new OrderItem(product.getId(), quantity));
-        product.addHold(quantity);
+        orderItems.add(new OrderItem(productId, quantity));
+        stockItem.addHold(quantity);
     }
 
     public List<OrderItem> getItems() {
@@ -27,7 +30,10 @@ public class Order {
     }
 
     public void removeItem(Product product, int quantity) {
-        orderItems.removeIf(item -> item.productId() == product.getId());
-        product.removeHold(quantity);
+        int productId = product.getId();
+        StockItem stockItem = guitarShack.getStockItem(productId);
+
+        orderItems.removeIf(item -> item.productId() == productId);
+        stockItem.removeHold(quantity);
     }
 }
